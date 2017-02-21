@@ -17,7 +17,7 @@ public class TranslatorTest
     public void testTranslate()
             throws IOException
     {
-        Translator translator = new Translator();
+        Translator translator = new Translator("src\\test\\cmudict.0.7a.txt");;
         String str = "It was past one o'clock when Pierre left his friend. It was a cloudless, northern, summer night. " +
                 "Pierre took an open cab intending to drive straight home. But the nearer he drew to the house" +
                 "the more he felt the impossibility of going to sleep on such a night. It was light enough to see a " +

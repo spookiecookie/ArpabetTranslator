@@ -1,30 +1,28 @@
 package net.battleship;
 
+import net.battleship.arpabet.ArpabetWord;
+import net.battleship.trie.Trie;
+
 import java.io.*;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.regex.Pattern;
 
 /**
  * Created by m.zilenas on 2017-02-20.
  */
 public class TrieBuilder
 {
-    Path file;
-
+    Trie trie ;
     public Trie getTrie()
     {
         return trie;
     }
-
-    public void setTrie(Trie trie)
+    private void setTrie(Trie trie)
     {
         this.trie = trie;
     }
-
-    Trie trie ;
 
     //Translations
     Map<String, List<String>> translations = new Hashtable<String, List<String>>();
@@ -62,15 +60,8 @@ public class TrieBuilder
 
             String translation = line.substring(line.indexOf(" ") + 1);
 
-            Scanner scanner = new Scanner(translation);
-
-            List<String> list = new LinkedList<String>();
-            while (scanner.hasNext())
-            {
-                list.add(scanner.next());
-            }
-
-            getTrie().add(word, list);
+            ArpabetWord<String> arpabetWord = ArpabetWord.fromString(translation);
+            getTrie().add(word, arpabetWord);
         }
     }
 }

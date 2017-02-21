@@ -1,13 +1,12 @@
-package test;
+package test.net.battleship.trie;
 
-import net.battleship.Trie;
+import net.battleship.trie.Trie;
 import net.battleship.TrieBuilder;
+import net.battleship.arpabet.ArpabetWord;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -18,7 +17,6 @@ public class TrieTest
 {
     TrieBuilder tb;
 
-    @Before
     public void init()
     {
         try
@@ -32,20 +30,38 @@ public class TrieTest
     }
 
     @Test
+    public void add() throws Exception
+    {
+        Trie trie = new Trie();
+    }
+
+    @Test
+    public void hasValue() throws Exception
+    {
+
+    }
+
+    @Test
+    public void getValue() throws Exception
+    {
+
+    }
+
+    @Test
     public void testAddWord() throws Exception
     {
         Trie trie = tb.getTrie();
         String value = "ABACUS";
-        List<String> translation =  Arrays.asList("AE1", "B", "AH0", "K", "AH0", "S");
+        ArpabetWord translation =  ArpabetWord.fromString("AE1 B AH0 K AH0 S");
 
         String value2 = "ABBENHAUS";
-        List<String> translation2 = Arrays.asList("AE1", "B", "AH0", "N", "HH", "AW2", "S");
+        ArpabetWord translation2 = ArpabetWord.fromString("AE1 B AH0 N HH AW2 S");
 
         String value3 = "AB";
-        List<String> translation3 = Arrays.asList("AE1", "B");
+        ArpabetWord translation3 = ArpabetWord.fromString("AE1 B");
 
         String value4 = "AB";
-        List<String> translation4 = Arrays.asList("EY1", "B", "IY1");
+        ArpabetWord translation4 = ArpabetWord.fromString("EY1 B IY1");
 //        trie.add(value, translation);
 //        trie.add(value2, translation2);
 

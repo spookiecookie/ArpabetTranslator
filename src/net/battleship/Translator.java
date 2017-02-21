@@ -1,8 +1,9 @@
 package net.battleship;
 
+import net.battleship.arpabet.ArpabetWord;
+import net.battleship.trie.Trie;
+
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -10,25 +11,36 @@ import java.util.Scanner;
  */
 public class Translator
 {
+    Trie trie;
+    public Trie getTrie()
+    {
+        return trie;
+    }
+
+    public Translator(String path)
+            throws IOException
+    {
+        TrieBuilder tb = new TrieBuilder(path);
+        trie = tb.getTrie();
+    }
+
     public String translate(String text)
             throws  IOException
     {
-        TrieBuilder tb;
-        tb = new TrieBuilder("src\\test\\cmudict.0.7a.txt");
-        Trie trie = tb.getTrie();
         Scanner scanner = new Scanner(text);
-        List<String> codes = new LinkedList<>();
-        StringBuilder translated = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
+        ArpabetWord<String> arpabetWord = new ArpabetWord<>();
         while (scanner.hasNext())
         {
-            codes.add(scanner.next());
-            Trie.Node leafNode = trie.getLeafNode(codes);
-            if (!leafNode.getLeaves().isEmpty())
+            String symbol = scanner.next();
+            arpabetWord.append(symbol);
+
+            if (getTrie().hasValue(arpabetWord))
             {
-                translated.append(trie.getValue(codes));
-                codes.clear();
+                //found
+                sb.append(getTrie().getValue(arpabetWord));
             }
         }
-        return translated.toString();
+        return sb.toString();
     }
 }
