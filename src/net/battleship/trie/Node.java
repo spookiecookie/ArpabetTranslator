@@ -9,9 +9,8 @@ import java.util.LinkedList;
 class Node<K>
 {
     Collection<Node> children = new LinkedList<Node>();
-    Leaf<K> leaf = new Leaf<>();
 
-    public Node(String nodeKey)
+    Node(String nodeKey)
     {
         setKey(nodeKey);
     }
@@ -20,17 +19,16 @@ class Node<K>
     String getKey() { return key; }
     private void setKey(String key) { this.key = key; }
 
-    void setLeaf(Leaf<K> leaf)
-    {
-        this.leaf = leaf;
-    }
+    String word = null; //if set then this is the word we have traveled for
+    String getWord() { return word; }
+    void setWord(String word) { this.word = word; }
 
-    public Node getChildFor(String key)
+    Node getChildFor(String key)
     {
         Node ret = null;
         for (Node node : getChildren())
         {
-            if (node.getKey().equals(key))
+            if (node.getKey().equalsIgnoreCase(key))
             {
                 ret = node;
                 break;
@@ -44,7 +42,7 @@ class Node<K>
      *
      * @return
      */
-    public boolean hasChildKey(String key)
+    boolean hasChildKey(String key)
     {
         for (Node node : getChildren())
         {
@@ -56,7 +54,7 @@ class Node<K>
         return false;
     }
 
-    public void addChild(Node node)
+    void addChild(Node node)
     {
         getChildren().add(node);
     }

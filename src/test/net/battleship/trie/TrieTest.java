@@ -68,9 +68,9 @@ public class TrieTest
 //        trie.add(value, translation);
 //        trie.add(value2, translation2);
 
-        assertEquals(value, trie.getValue(translation));
-        assertEquals(value2, trie.getValue(translation2));
-        assertEquals(value3, trie.getValue(translation3));
-        assertEquals(value4, trie.getValue(translation4));
+        assertEquals(value, trie.getWord(translation));
+        assertEquals(value2, trie.getWord(translation2));
+        assertEquals(value3, trie.getWord(translation3));
+        assertEquals(value4, trie.getWord(translation4));
     }
 }

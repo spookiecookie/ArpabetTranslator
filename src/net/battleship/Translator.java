@@ -35,10 +35,12 @@ public class Translator
             String symbol = scanner.next();
             arpabetWord.append(symbol);
 
-            if (getTrie().hasValue(arpabetWord))
+            System.out.println("Translating : "+ arpabetWord);
+            if (getTrie().hasWord(arpabetWord))
             {
                 //found
-                sb.append(getTrie().getValue(arpabetWord));
+                sb.append(getTrie().getWord(arpabetWord)).append(" ");
+                arpabetWord = new ArpabetWord<>();
             }
         }
         return sb.toString();

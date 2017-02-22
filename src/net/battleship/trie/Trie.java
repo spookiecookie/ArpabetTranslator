@@ -32,8 +32,8 @@ public class Trie
             }
         }
 
-        //On the last node set it's key.
-        node.setLeaf(new Leaf<>(value));
+        //On the last node set it's word.
+        node.setWord(value);
     }
 
     /**
@@ -41,7 +41,7 @@ public class Trie
      *
      * @return
      */
-    private Node getLeaf(ArpabetWord arpabetWord)
+    private Node getLastNodeFor(ArpabetWord arpabetWord)
     {
         //Start from the root node...
         Node node = root;
@@ -69,7 +69,7 @@ public class Trie
      *
      * @return
      */
-    public boolean hasValue(ArpabetWord arpabetWord)
+    public boolean hasWord(ArpabetWord arpabetWord)
     {
         Node node = root;
         for (Object o : arpabetWord.getSymbols())
@@ -83,12 +83,12 @@ public class Trie
                 return false;
             }
         }
-        return true;
+        return node.getWord() != null;
     }
 
-    public String getValue(ArpabetWord arpabetWord)
+    public String getWord(ArpabetWord arpabetWord)
     {
-        return getLeaf(arpabetWord).getKey();
+        return getLastNodeFor(arpabetWord).getWord();
     }
 
 }
