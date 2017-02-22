@@ -9,25 +9,16 @@ import java.util.LinkedList;
 class Node<K>
 {
     Collection<Node> children = new LinkedList<Node>();
-    /**
-     * Node's value. Not required.
-     */
-    NodeValue<String> value = new NodeValue<String>();
     Leaf<K> leaf = new Leaf<>();
 
     public Node(String nodeKey)
     {
-        setKey(new NodeKey(nodeKey));
+        setKey(nodeKey);
     }
 
-    NodeKey key;
-    NodeKey getKey() { return key; }
-    private void setKey(NodeKey key) { this.key = key; }
-
-    Leaf<K> getLeaf()
-    {
-        return leaf;
-    }
+    String key;
+    String getKey() { return key; }
+    private void setKey(String key) { this.key = key; }
 
     void setLeaf(Leaf<K> leaf)
     {
@@ -57,7 +48,7 @@ class Node<K>
     {
         for (Node node : getChildren())
         {
-            if (node.getKey().equals(key))
+            if (node.getKey().equalsIgnoreCase(key))
             {
                 return true;
             }
@@ -75,16 +66,4 @@ class Node<K>
         return children;
     }
 
-    static class Leaf<V>
-    {
-        V value;
-        public V getValue() { return value; }
-        public void setValue(V value) { this.value = value; }
-
-        public Leaf() { }
-        public Leaf(V value)
-        {
-            setValue(value);
-        }
-    }
 }

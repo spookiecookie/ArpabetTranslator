@@ -18,7 +18,7 @@ public class TrieBuilderTest
 
     }
 
-    @Test(timeout = 3000)
+    @Test
     public void testInit()
             throws IOException
     {

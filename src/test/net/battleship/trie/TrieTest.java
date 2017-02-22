@@ -16,6 +16,8 @@ import static org.junit.Assert.*;
 public class TrieTest
 {
     TrieBuilder tb;
+    String value = "ABACUS";
+    ArpabetWord translation =  ArpabetWord.fromString("AE1 B AH0 K AH0 S");
 
     public void init()
     {
@@ -33,6 +35,7 @@ public class TrieTest
     public void add() throws Exception
     {
         Trie trie = new Trie();
+        trie.add(value, translation);
     }
 
     @Test

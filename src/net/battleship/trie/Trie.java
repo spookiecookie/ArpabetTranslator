@@ -33,7 +33,7 @@ public class Trie
         }
 
         //On the last node set it's key.
-        node.setLeaf(new Node.Leaf<>(value));
+        node.setLeaf(new Leaf<>(value));
     }
 
     /**
@@ -88,7 +88,7 @@ public class Trie
 
     public String getValue(ArpabetWord arpabetWord)
     {
-        return getLeaf(arpabetWord).getKey().getKey();
+        return getLeaf(arpabetWord).getKey();
     }
 
 }

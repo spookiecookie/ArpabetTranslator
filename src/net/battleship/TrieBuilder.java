@@ -8,6 +8,8 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by m.zilenas on 2017-02-20.
@@ -43,25 +45,23 @@ public class TrieBuilder
         BufferedReader bur = new BufferedReader(isr);
 
         String line = "";
-        String lastWord = "";
+
+        Pattern p = Pattern.compile("(?![;]{3})^(?<word>[^\\s(]*)(?:\\((?<num>\\d+)\\))?\\s+(?<translation>.*)$"); // try this pattern http://www.regexplanet.com/advanced/java/index.html
         while ((line = bur.readLine()) != null)
         {
+            Matcher match = p.matcher(line);
             //skip
-            if (line.startsWith(";;;"))
+            if (!match.matches() || match.group("word") == null)
                 continue;
-
-            String word = line.substring(0, line.indexOf(" "));
-
-            //Is an alternative: has number between parenthesis
-            if (word.endsWith(")"))
+            String word = match.group("word");
+            String translation = match.group("translation");
+            Integer number = null;
+            if (match.group("num") != null)
             {
-                word = line.substring(0, line.indexOf("("));
+                number = Integer.valueOf(match.group("num"));
             }
 
-            String translation = line.substring(line.indexOf(" ") + 1);
-
-            ArpabetWord<String> arpabetWord = ArpabetWord.fromString(translation);
-            getTrie().add(word, arpabetWord);
+            getTrie().add(word, ArpabetWord.fromString(translation));
         }
     }
 }
