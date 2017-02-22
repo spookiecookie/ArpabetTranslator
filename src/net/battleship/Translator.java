@@ -1,5 +1,6 @@
 package net.battleship;
 
+import net.battleship.arpabet.ArpabetSymbol;
 import net.battleship.arpabet.ArpabetWord;
 import net.battleship.trie.Trie;
 
@@ -30,18 +31,37 @@ public class Translator
         Scanner scanner = new Scanner(text);
         StringBuilder sb = new StringBuilder();
         ArpabetWord<String> arpabetWord = new ArpabetWord<>();
+        String symbol = null;
         while (scanner.hasNext())
         {
-            String symbol = scanner.next();
+            if (symbol == null)
+            {
+                symbol = scanner.next();
+            }
+
             arpabetWord.append(symbol);
 
-            System.out.println("Translating : "+ arpabetWord);
             if (getTrie().hasWord(arpabetWord))
             {
                 //found
-                sb.append(getTrie().getWord(arpabetWord)).append(" ");
-                arpabetWord = new ArpabetWord<>();
+                //Let's see if when we append next phoneme we have valid word, then take next phoneme.
+                while (scanner.hasNext())
+                {
+                    symbol = scanner.next();
+                    ArpabetWord nextWord = ArpabetWord.fromString(arpabetWord.toString()).append(symbol);
+                    if (getTrie().hasWord(nextWord))
+                    {
+                        arpabetWord = nextWord;
+                    }
+                    else
+                    {
+                        sb.append(getTrie().getWord(arpabetWord)).append(" ");
+                        arpabetWord = ArpabetWord.fromString(symbol);
+                        break;
+                    }
+                }
             }
+            symbol = null;
         }
         return sb.toString();
     }

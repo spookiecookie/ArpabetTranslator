@@ -30,9 +30,10 @@ public class ArpabetWord<V>
         return arpabetWord;
     }
 
-    public void append(String symbol)
+    public ArpabetWord append(String symbol)
     {
         getSymbols().add(new ArpabetSymbol(symbol));
+        return this;
     }
 
     @Override
