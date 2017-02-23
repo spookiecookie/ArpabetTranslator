@@ -5,7 +5,7 @@ import net.battleship.arpabet.ArpabetWord;
 import net.battleship.trie.Trie;
 
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by m.zilenas on 2017-02-20.
@@ -18,6 +18,33 @@ public class Translator
         return trie;
     }
 
+    static class PhonemesDeliver
+    {
+        List<String> phonemesCache = new LinkedList<String>();
+        public List<String> getPhonemesCache() { return phonemesCache; }
+        public void setPhonemesCache(List<String> phonemesCache) { this.phonemesCache = phonemesCache; }
+        Scanner scanner;
+
+        public PhonemesDeliver(String source)
+        {
+            scanner = new Scanner(source);
+            while(scanner.hasNext())
+            {
+                getPhonemesCache().add(scanner.next());
+            }
+        }
+
+        public ListIterator<String> listIterator()
+        {
+            return getPhonemesCache().listIterator();
+        }
+
+        public ListIterator<String> listIterator(int index)
+        {
+            return getPhonemesCache().listIterator(index);
+        }
+    }
+
     public Translator(String path)
             throws IOException
     {
@@ -28,40 +55,49 @@ public class Translator
     public String translate(String text)
             throws  IOException
     {
-        Scanner scanner = new Scanner(text);
         StringBuilder sb = new StringBuilder();
+
         ArpabetWord<String> arpabetWord = new ArpabetWord<>();
-        String symbol = null;
-        while (scanner.hasNext())
+        PhonemesDeliver pd = new PhonemesDeliver(text);
+
+        ListIterator<String> li = pd.listIterator();
+
+        while (li.hasNext())
         {
-            if (symbol == null)
-            {
-                symbol = scanner.next();
-            }
-
-            arpabetWord.append(symbol);
-
+            arpabetWord.append(li.next());
             if (getTrie().hasWord(arpabetWord))
             {
-                //found
-                //Let's see if when we append next phoneme we have valid word, then take next phoneme.
-                while (scanner.hasNext())
+                ArpabetWord<String> longestWord = arpabetWord;
+                if (li.hasNext())
                 {
-                    symbol = scanner.next();
-                    ArpabetWord nextWord = ArpabetWord.fromString(arpabetWord.toString()).append(symbol);
-                    if (getTrie().hasWord(nextWord))
+                    //found
+                    ListIterator<String> lif = pd.listIterator(li.nextIndex());
+                    int longestWordOffset = li.nextIndex();
+                    int phonemeCount = 0;
+                    boolean foundLonger = false;
+                    ArpabetWord<String> candidate = ArpabetWord.fromString(longestWord.toString());
+                    while (lif.hasNext() && phonemeCount < 10)
                     {
-                        arpabetWord = nextWord;
+                        String nextPhoneme = lif.next();
+                        phonemeCount++;
+                        candidate.append(nextPhoneme);
+                        if (getTrie().hasWord(candidate))
+                        {
+                            longestWord = ArpabetWord.fromString(candidate.toString());
+                            longestWordOffset = lif.nextIndex();
+                            foundLonger = true;
+                        }
                     }
-                    else
+
+                    if (foundLonger)
                     {
-                        sb.append(getTrie().getWord(arpabetWord)).append(" ");
-                        arpabetWord = ArpabetWord.fromString(symbol);
-                        break;
+                        //reset list to position
+                        li = pd.listIterator(longestWordOffset);
                     }
                 }
+                sb.append(getTrie().getWord(longestWord)).append(" ");
+                arpabetWord = new ArpabetWord<>();
             }
-            symbol = null;
         }
         return sb.toString();
     }

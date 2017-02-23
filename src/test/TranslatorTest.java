@@ -62,5 +62,6 @@ public class TranslatorTest
                 "DH AH0 S EY1 M EH2 K S K L AH0 M EY1 SH AH0 N AH1 N K W OW1 T";
 
         assertEquals(str, translator.translate(translation));
+        //System.out.println(translator.translate(translation));
     }
 }

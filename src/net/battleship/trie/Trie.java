@@ -57,7 +57,7 @@ public class Trie
             } else
             {
                 //Breaks if not found in dictionary.
-                throw new IllegalArgumentException("Not found.");
+                throw new IllegalArgumentException("Not found. " + arpabetWord.toString());
             }
         }
 
